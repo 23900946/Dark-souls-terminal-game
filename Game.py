@@ -554,15 +554,13 @@ def iron_golem():
     time.sleep(5)
     print("")
     print("The Iron golem falls to the floor. You are then picked up by some gargolyes who take you away from the fort.")
+    time.sleep(4)
     anor_londor()
 
 def anor_londor():
+    global health
     smough_health = 100
     ornstein_health = 100
-    if "Black knight sword" in inventory:
-        player_attack = randint(1,50)
-    elif "Long sword" in inventory:
-        player_attack = randint(10,50)
     print("")
     print("You are dropped off in Anor londor, the city where the former seat of power of the gods is located.")
     print("")
@@ -571,36 +569,69 @@ def anor_londor():
     print("")
     time.sleep(4)
     print("Inside the catherdral you encounter Dragon slayer Ornstein and Executioner Smough.")
+    print("")
     time.sleep(3)
     print("They are your final test.")
+    print("")
     time.sleep(3)
     while smough_health > 0 and ornstein_health > 0:
         if "Black knight sword" in inventory:
-            player_attack = randint(1,50)
-        elif "Long sword" in inventory:
             player_attack = randint(10,50)
+        elif "Long sword" in inventory:
+            player_attack = randint(1,50)
         dodge = randint(0,1)
         choice = input("Do you wish to Attack/Block/Heal?: ")
         print("")
+        print(f"Your health: {health}")
+        print(f"Smough health: {smough_health}")
+        print(f"Ornstein health: {ornstein_health}")
+        print("")
         if choice == "Attack":
             print("You engage in battle with the duo and land successfull hits.")
+            print("")
             smough_health -= player_attack
             ornstein_health -= player_attack
             health_check()
+            time.sleep(2)
+            print("They retialiate.")
+            print("")
+            time.sleep(2)
 
         elif choice == "Block":
+            time.sleep(2)
+            print("They attack you.")
             print("")
             health -= boss_attack
             health += 10
             health_check()
 
+        elif choice == "Heal":
+            if dodge == 1:
+                print("You manage to heal without them hitting you.")
+                print("")
+                time.sleep(2)
+                health += 20
+                estus_flasks -= 1
+
+            else:
+                print("They manage to strike you whilst you were trying to heal.")
+                print("")
+                health -= boss_attack
+                time.sleep(2)
+                health_check()
+
+        elif smough_health <= 0 and ornstein_health <= 0:
+            break
+
         else:
             print("Please enter either Attack, Block or Heal.")
+            print("")
 
-    print("")
     print("VICTORY ACHIEVED")
-    time.sleep(5)
     print("")
+    time.sleep(5)
+    print("After a tough fight you have finally defeated Ornstein and Smough.")
+    time.sleep(3)
     ending()
 
 def ending():
